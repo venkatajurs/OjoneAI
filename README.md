@@ -32,10 +32,14 @@ python -m venv .venv
 # source .venv/bin/activate   # macOS/Linux
 pip install -r requirements.txt
 cp .env.example .env          # Edit with your API keys
+python -m app.seed            # Create the default demo user (id=1)
 uvicorn app.main:app --reload --port 8000
 ```
 
 API docs: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+Run the Phase 2 API checks with `python -m unittest discover -s tests` from
+the `backend` directory.
 
 ### Frontend
 

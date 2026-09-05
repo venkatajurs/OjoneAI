@@ -9,13 +9,13 @@ from pydantic import BaseModel, Field
 # ---------------------------------------------------------------------------
 
 class FoodItemBase(BaseModel):
-    name: str
+    name: str = Field(..., min_length=1, max_length=200)
     quantity: str | None = None
-    calories: float = 0.0
-    protein: float = 0.0
-    carbs: float = 0.0
-    fat: float = 0.0
-    confidence: float = 1.0
+    calories: float = Field(0.0, ge=0)
+    protein: float = Field(0.0, ge=0)
+    carbs: float = Field(0.0, ge=0)
+    fat: float = Field(0.0, ge=0)
+    confidence: float = Field(1.0, ge=0, le=1)
 
 
 class FoodItemCreate(FoodItemBase):
@@ -37,7 +37,7 @@ class MealCreate(BaseModel):
         ..., pattern="^(breakfast|lunch|snack|dinner)$",
         description="One of: breakfast, lunch, snack, dinner",
     )
-    foods: list[FoodItemCreate]
+    foods: list[FoodItemCreate] = Field(..., min_length=1)
     notes: str | None = None
 
 
@@ -57,8 +57,8 @@ class MealOut(BaseModel):
 # ---------------------------------------------------------------------------
 
 class UserCreate(BaseModel):
-    name: str = "User"
-    daily_calorie_goal: int = 2000
+    name: str = Field("User", min_length=1, max_length=100)
+    daily_calorie_goal: int = Field(2000, gt=0, le=10000)
 
 
 class UserOut(BaseModel):
